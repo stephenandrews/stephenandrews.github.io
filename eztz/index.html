@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>eztz - Tezos Key Generator</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  </head>
+  <body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="#">eztz</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Code</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/stephenandrews/eztz" target="_blank">github</a>
+          </li>
+          <!--<li class="nav-item">
+            <a class="nav-link" href="#">Documentation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>-->
+        </ul>
+        <!--<form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>-->
+      </div>
+    </nav>
+    <div class="container">
+        <div class="row justify-content-md-center">
+        <div class="col-md-10 text-center">
+            <h2>eztz - easy key generation tool for the Tezos blockchain</h2>
+            <p>Check us out on <a href="https://github.com/stephenandrews/eztz" target="_blank">github</a> for installation and usage. All key generation is completed "in browser" - please note this may not work on all browsers.</p>
+        </div>
+        </div>
+        <div class="row justify-content-md-center">
+        <div class="col-md-10">
+        
+            <form>
+              <div class="form-group">
+                <label for="mnemonic">Mnemonic</label>
+                <textarea required rows="4" type="text" class="form-control" id="mnemonic" placeholder="Enter mnemonic"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="passphrase">Passphrase</label>
+                <input required type="text" class="form-control" id="passphrase" placeholder="Enter passphrase">
+              </div>
+            </form>
+          <button type="submit" id="generateMnemonic" class="btn btn-primary">Generate New Mnemonic</button>
+          <button type="submit" id="generateKeys" class="btn btn-success">Generate Keys</button>
+
+        </div>
+        </div>
+        <div class="row justify-content-md-center">
+        <div class="col-md-10 generatedKeys">
+            <strong>mnemonic: </strong><span class='mnemonic'></span><br />
+            <strong>passphrase: </strong><span class='passphrase'></span><br />
+            <strong>sk: </strong><span class='sk'></span><br />
+            <strong>pk: </strong><span class='pk'></span><br />
+            <strong>pkh: </strong><span class='pkh'></span><br />
+            <p>You can add the above account to the alphanet using:<br />
+            <code>./alphanet.sh client add secret key '[some name]' '[sk above]'</code></p>
+        </div>
+        <div class="row footer">
+        <div class="col-md-12">
+        Donate Bitcoin -  <a href="bitcoin:1KSiyfgs5XwTZjaLpmCTHxonsyXMx383P1">1KSiyfgs5XwTZjaLpmCTHxonsyXMx383P1</a>
+        </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <style type="text/css" media="screen">
+        body{
+            padding-top:5em;
+        }
+        .footer{
+            text-align:center;
+            margin:30px;
+            font-size:.9em;
+        }
+        label{font-weight:bold;}
+        .generatedKeys{display:none;padding-top:20px;}
+    </style>
+    <script src="./js/eztz.js"></script>
+    <script>
+        $('docmenut').ready(function(){
+            eztz_ready(function(eztz){
+                var m = eztz.generateMnemonic();
+                $('#mnemonic').val(m);
+                
+                
+                $('button#generateMnemonic').click(function(e){
+                    e.preventDefault();
+                    var m = eztz.generateMnemonic();
+                    $('#mnemonic').val(m);
+                });
+                $('button#generateKeys').click(function(e){
+                   var keys = eztz.generateKeys($('#mnemonic').val(), $('#passphrase').val());
+                    console.log(keys);
+                   $('.generatedKeys>.mnemonic').html(keys.mnemonic);
+                   $('.generatedKeys>.passphrase').html(keys.passphrase);
+                   $('.generatedKeys>.sk').html(keys.sk);
+                   $('.generatedKeys>.pk').html(keys.pk);
+                   $('.generatedKeys>.pkh').html(keys.pkh);
+                   $('.generatedKeys').show();
+                });
+            });
+        });
+        
+    </script>
+  </body>
+</html>
