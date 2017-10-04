@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -173,7 +172,7 @@ key var.payee;
             var code = editor.getValue();
             if (!code) return;
             $("#compiled").html("Compiling...");
-            $.post("http://173.254.236.122/", {code:code}, function(result){
+            $.post("https://173.254.236.122/", {code:code}, function(result){
                 $("#compiled").html(result);
                 fetch("https://api.try-michelson.com/typecheck",{method:"post",body:JSON.stringify({program:result})}).then(function(e){return e.text()}).then(function(t){
                     $('#stacktrace').html(t);
