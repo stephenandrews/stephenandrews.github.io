@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>fi - Smart coding for smart contracts</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  </head>
+  <body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="#">fi</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Code</a>
+          </li>
+          <!--<li class="nav-item">
+            <a class="nav-link" href="#">Documentation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>-->
+        </ul>
+        <!--<form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>-->
+      </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+        <div class="col-md-12 text-center">
+            <h2>Welcome to fi - smart coding for smart contracts</h2>
+            <p><strong>fi</strong> is an interpreted language for <a href="http://www.michelson-lang.com/" target="_blank">Michelson</a>, allowing programmers to easily develop <a href="http://tezos.com" target="_blank">Tezos</a> smart contracts and validate the compiled Michelson code.</p>
+            <p><strong>We are currently in alpha</strong></p>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-md-12">
+        
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item"><a id="editor-tab" data-toggle="tab" class="nav-link active" href="#editor" role="tab" aria-controls="editor" aria-expanded="true">Editor</a></li>
+          <li class="nav-item"><a id="typecheck-tab" data-toggle="tab" class="nav-link" href="#typecheck" role="tab" aria-controls="editor">Stacktrace</a></li>
+          <li class="nav-item"><a id="run-tab" data-toggle="tab" class="nav-link" href="#run" role="tab" aria-controls="editor">Test</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="editor" aria-labelledby="editor-tab" class="tab-pane fade show active" role="tabpanel">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div id="code"># Start by defining variables
+key storage.king;
+tez storage.bounty;
+timestamp storage.end;
+tez var.payout;
+key var.payee;
+
+# Script entry - ability to have multiple 
+# with different signatures (parameters) to 
+# allow multiple paths for your contract
+@(key sender) {
+    if (NOW <= storage.end) {
+        if (BALANCE < storage.bounty) fail;
+    }
+    var.payout = storage.bounty;
+    var.payee = storage.king;
+    storage.bounty = BALANCE;
+    storage.king = input.sender;
+    storage.end = add(NOW, nat 604800);
+    pay(var.payee, var.payout);
+}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <pre id="compiled"></pre>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <button type="button" id="compile" class="btn btn-primary">Compile</button>
+                        <button type="button" id="clear" class="btn btn-danger">Clear</button>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <button type="button" id="copy" class="btn btn-secondary">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div id="typecheck" aria-labelledby="typecheck-tab" class="tab-pane fade show" role="tabpanel">
+                <pre id="stacktrace"></pre>
+            </div>
+            <div id="run" aria-labelledby="run-tab" class="tab-pane fade show" role="tabpanel">
+                <form>
+                  <div class="form-group row">
+                    <label for="storage" class="col-sm-2 col-form-label">Storage</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="storage" value="">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="parameter" class="col-sm-2 col-form-label">Parameter</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="parameter" placeholder="">
+                    </div>
+                  </div>
+                </form>
+            </div>
+        </div>
+        </div>
+        </div>
+        <div class="row footer">
+        <div class="col-md-12">
+        Donate Bitcoin -  <a href="bitcoin:1KSiyfgs5XwTZjaLpmCTHxonsyXMx383P1">1KSiyfgs5XwTZjaLpmCTHxonsyXMx383P1</a>
+        </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <script src="https://ace.c9.io/build/src/ace.js" type="text/javascript" charset="utf-8"></script>
+    <style type="text/css" media="screen">
+        body{
+            padding-top:5em;
+        }
+        #code { 
+            width:100%;
+            height:300px;
+        }
+        #compiled{
+            height: 300px;
+            width: 100%;
+            word-wrap: break-word;
+            white-space: normal;
+            display: block;
+        }
+        pre{
+            background-color:#eee;
+            padding:5px;
+        }
+        .tab-content{
+            padding-top:30px;
+        }
+        .footer{
+            text-align:center;
+            margin:30px;
+            font-size:.9em;
+        }
+    </style>
+    <script>
+        var editor = ace.edit("code");
+        editor.setTheme("ace/theme/monokai");
+        $('docmenut').ready(function(){
+            compile();
+            $('button#copy').click(function(){
+               copyToClipboard($("#compiled").html()); 
+               alert("Compiled code has been copied");
+            });
+            $('button#clear').click(function(){
+                editor.setValue("");
+                $("#compiled").html("");
+                $("#stacktrace").html("");
+            });
+            $('button#compile').click(function(){
+                compile();
+            });
+        });
+        function compile(){
+            var code = editor.getValue();
+            if (!code) return;
+            $("#compiled").html("Compiling...");
+            $.post("http://173.254.236.122/", {code:code}, function(result){
+                $("#compiled").html(result);
+                fetch("https://api.try-michelson.com/typecheck",{method:"post",body:JSON.stringify({program:result})}).then(function(e){return e.text()}).then(function(t){
+                    $('#stacktrace').html(t);
+                    // console.log(t);
+                    // e({type:l,result:t});
+                });
+                
+            });
+        }
+        function copyToClipboard(text) {
+    if (window.clipboardData && window.clipboardData.setData) {
+        // IE specific code path to prevent textarea being shown while dialog is visible.
+        return clipboardData.setData("Text", text); 
+
+    } else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
+        var textarea = document.createElement("textarea");
+        textarea.textContent = text;
+        textarea.style.position = "fixed";  // Prevent scrolling to bottom of page in MS Edge.
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+            return document.execCommand("copy");  // Security exception may be thrown by some browsers.
+        } catch (ex) {
+            console.warn("Copy to clipboard failed.", ex);
+            return false;
+        } finally {
+            document.body.removeChild(textarea);
+        }
+    }
+}
+    </script>
+  </body>
+</html>
