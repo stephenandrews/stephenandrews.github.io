@@ -18,10 +18,10 @@
 
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
+          <li class="nav-item ">
             <a class="nav-link" href="index.html">Key Generation</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" href="faucet.html">Faucet</a>
           </li>
           <li class="nav-item">
@@ -54,37 +54,28 @@
     <div class="container">
         <div class="row justify-content-md-center">
         <div class="col-md-10 text-center">
-            <h2>eztz - easy key generation tool for the Tezos blockchain</h2>
-            <p>Check us out on <a href="https://github.com/stephenandrews/eztz" target="_blank">github</a> for installation and usage. All key generation is completed "in browser" - please note this may not work on all browsers.</p>
+            <h2>Tez Faucet</h2>
+            <p>Easily get 100,000TZ for free (alphanet only) - perfect for those without access to an up to date node. Works well with our <a href="" target="_blank">TezBox Wallet</a>, and keep an eye for my upcoming Lottery decentralized-app, demonstrating the power of Smart Contracts with Tezos</p>
+            <p><em><strong>Note - these may not propagate correctly on all nodes, and current script is WIP</strong></em></p>
         </div>
         </div>
         <div class="row justify-content-md-center">
         <div class="col-md-10">
         
             <form>
+ 
               <div class="form-group">
-                <label for="mnemonic">Mnemonic</label>
-                <textarea required rows="4" type="text" class="form-control" id="mnemonic" placeholder="Enter mnemonic"></textarea>
+                <label for="passphrase">Address to send Tez to</label>
+                <input required type="text" class="form-control" id="toaddress" placeholder="Enter tz1... address">
               </div>
               <div class="form-group">
-                <label for="passphrase">Passphrase</label>
-                <input required type="text" class="form-control" id="passphrase" placeholder="Enter passphrase">
+                <label for="passphrase">Custom RPC address:port *optional - leave blank to use our node</label>
+                <input required type="text" class="form-control" id="customHost" placeholder="http://localhost:8732">
               </div>
             </form>
-          <button type="submit" id="generateMnemonic" class="btn btn-primary">Generate New Mnemonic</button>
-          <button type="submit" id="generateKeys" class="btn btn-success">Generate Keys</button>
+          <button type="submit" id="getFreeTez" class="btn btn-primary">Gimme Free Tez</button>
 
         </div>
-        </div>
-        <div class="row justify-content-md-center">
-        <div class="col-md-10 generatedKeys">
-            <strong>mnemonic: </strong><span class='mnemonic'></span><br />
-            <strong>passphrase: </strong><span class='passphrase'></span><br />
-            <strong>sk: </strong><span class='sk'></span><br />
-            <strong>pk: </strong><span class='pk'></span><br />
-            <strong>pkh: </strong><span class='pkh'></span><br />
-            <p>You can add the above account to the alphanet using:<br />
-            <code>./alphanet.sh client add secret key '[some name]' '[sk above]'</code></p>
         </div>
         <div class="row footer">
         <div class="col-md-12">
@@ -108,28 +99,32 @@
         label{font-weight:bold;}
         .generatedKeys{display:none;padding-top:20px;}
     </style>
-    <script src="/eztz/js/eztz.js"></script>
+    <script src="js/eztz.js"></script>
     <script>
         $('docmenut').ready(function(){
-            eztz_ready(function(eztz){
-                var m = eztz.generateMnemonic();
-                $('#mnemonic').val(m);
-                
-                
-                $('button#generateMnemonic').click(function(e){
-                    e.preventDefault();
-                    var m = eztz.generateMnemonic();
-                    $('#mnemonic').val(m);
-                });
-                $('button#generateKeys').click(function(e){
-                   var keys = eztz.generateKeys($('#mnemonic').val(), $('#passphrase').val());
-                    console.log(keys);
-                   $('.generatedKeys>.mnemonic').html(keys.mnemonic);
-                   $('.generatedKeys>.passphrase').html(keys.passphrase);
-                   $('.generatedKeys>.sk').html(keys.sk);
-                   $('.generatedKeys>.pk').html(keys.pk);
-                   $('.generatedKeys>.pkh').html(keys.pkh);
-                   $('.generatedKeys').show();
+            $('button#getFreeTez').click(function(e){
+                e.preventDefault();
+                $('button#getFreeTez').html('Loading... please wait');
+                 $('button#getFreeTez').prop('disabled', true);
+                 var toAddress = $('#toaddress').val();
+                 if (!toAddress){
+                    alert("Please enter an address!");
+                    return;
+                 }
+                var customHost = $('#customHost').val();
+                 if (customHost){
+                  eztz.setRpcUrl(customHost);
+                 } else {
+                  eztz.resetRpcUrl();
+                 }
+                eztz.alphanet.getFreeTez(toAddress, function(r){
+                  if (typeof r.injectedOperation != 'undefined'){
+                    alert("Transfer complete - operation hash is #"+r.injectedOperation);
+                  } else{
+                    alert("Whoops, something went wrong. Probably a node issue");
+                  }
+                  $('button#getFreeTez').html('Gimme Free Tez');
+                 $('button#getFreeTez').prop('disabled', false);
                 });
             });
         });
