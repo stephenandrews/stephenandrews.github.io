@@ -53,26 +53,24 @@
             <div id="editor" aria-labelledby="editor-tab" class="tab-pane fade show active" role="tabpanel">
                 <div class="row">
                     <div class="col-md-6">
-                        <div id="code"># Start by defining variables
-key storage.king;
-tez storage.bounty;
-timestamp storage.end;
-tez var.payout;
-key var.payee;
+                        <div id="code">const string GREETING "Hello World";
 
-# Script entry - ability to have multiple 
-# with different signatures (parameters) to 
-# allow multiple paths for your contract
-@(key sender) {
-    if (NOW <= storage.end) {
-        if (BALANCE < storage.bounty) fail;
-    }
-    var.payout = storage.bounty;
-    var.payee = storage.king;
-    storage.bounty = BALANCE;
-    storage.king = input.sender;
-    storage.end = add(NOW, nat 604800);
-    pay(var.payee, var.payout);
+object User(
+  string name,
+  nat age);
+  
+storage map(address => User) users;
+
+@signup(string name, nat age) returns (string greeting){
+  if (storage.users.in(SENDER)) throw; // Already signed up
+  let User newUser = new User(input.name, input.age);
+  storage.users.push(SENDER, newUser);
+  return.greeting = GREETING;
+}
+
+@getUser(address userAddress) returns (User user){
+  if (!storage.users.in(input.userAddress)) throw;
+  return.user = storage.users.get(input.userAddress);
 }</div>
                     </div>
                     <div class="col-md-6">

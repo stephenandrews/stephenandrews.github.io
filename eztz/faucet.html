@@ -113,11 +113,11 @@
                  }
                 var customHost = $('#customHost').val();
                  if (customHost){
-                  eztz.setRpcUrl(customHost);
+                  eztz.node.setProvider(customHost);
                  } else {
-                  eztz.resetRpcUrl();
+                  eztz.node.resetProvider();
                  }
-                eztz.alphanet.getFreeTez(toAddress, function(r){
+                eztz.alphanet.faucet(toAddress, function(r){
                   if (typeof r.injectedOperation != 'undefined'){
                     alert("Transfer complete - operation hash is #"+r.injectedOperation);
                   } else{
