@@ -117,7 +117,7 @@
                  } else {
                   eztz.node.resetProvider();
                  }
-                eztz.alphanet.faucet(toAddress, function(r){
+                eztz.alphanet.faucet(toAddress).then(function(r){
                   if (typeof r.injectedOperation != 'undefined'){
                     alert("Transfer complete - operation hash is #"+r.injectedOperation);
                   } else{
@@ -125,6 +125,8 @@
                   }
                   $('button#getFreeTez').html('Gimme Free Tez');
                  $('button#getFreeTez').prop('disabled', false);
+                }).catch(function(e){
+                  console.log("Error:", e);
                 });
             });
         });
