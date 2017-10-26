@@ -101,6 +101,21 @@
     </style>
     <script src="js/eztz.js"></script>
     <script>
+      var listener = [];
+      window.addEventListener("message", function(event) {
+        if (event.source != window || event.data.direction != "out")
+          return;
+        listener[event.data.type](event.data.response);
+      }, false);
+      window.tbapi = {
+        status : function(){
+          return new Promise(function (resolve, reject) {
+            listener["status"] = resolve;
+            window.postMessage({ direction : "in", type : "status"}, "*");
+          });
+        }
+      }
+    
         $('docmenut').ready(function(){
             $('button#getFreeTez').click(function(e){
                 e.preventDefault();
