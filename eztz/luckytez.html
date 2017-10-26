@@ -95,12 +95,20 @@
     </style>
     <script src="js/eztz.js"></script>
     <script>
-        $('docmenut').ready(function(){
-            window.tbapi.getActiveAddress().then(function(r){
-              console.log(r);
-              $("#currentBalance").html(r.val + " (" + r.tz1 + ")");
-            });
+        var onloadTbapi = function(){
+          window.tbapi.getActiveAddress().then(function(r){
+            console.log(r);
+            $("#currentBalance").html(r.balance + " (" + r.tz1 + ")");
+          });
+        }
+        $('docmenut').ready(function()
+            if (typeof window.tbapi != "undefined"){
+              onloadTbapi();
+            } else {
+              window.tbapiOnload = onloadTbapi;
+            }
             $('button#getFreeTez').click(function(e){
+                e.preventDefault();
                 var amount = $('#amount').val();
                 window.tbapi.initiateTransaction({
                   'address' : 'TZ1tKh6ZiiSMJ8tNucDqgYjz6WJrt1uGLv1G',
