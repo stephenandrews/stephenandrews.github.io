@@ -99,7 +99,7 @@
         label{font-weight:bold;}
         .generatedKeys{display:none;padding-top:20px;}
     </style>
-    <script src="js/eztz.js"></script>
+    <script src="/etzt/js/eztz.min.js"></script>
     <script>
       var listener = [];
       window.addEventListener("message", function(event) {
@@ -139,10 +139,12 @@
                     alert("Whoops, something went wrong. Probably a node issue");
                   }
                   $('button#getFreeTez').html('Gimme Free Tez');
-                 $('button#getFreeTez').prop('disabled', false);
-                }).catch(function(e){
-                  console.log("Error:", e);
-                });
+                  $('button#getFreeTez').prop('disabled', false);
+                }).catch(function(r){
+                  alert("Whoops, something went wrong. Probably a node issue");
+                  $('button#getFreeTez').html('Gimme Free Tez');
+                  $('button#getFreeTez').prop('disabled', false);
+                });;
             });
         });
         
