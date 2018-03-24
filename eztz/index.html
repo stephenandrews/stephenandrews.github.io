@@ -108,29 +108,27 @@
         label{font-weight:bold;}
         .generatedKeys{display:none;padding-top:20px;}
     </style>
-    <script src="/eztz/js/eztz.min.js"></script>
+    <script src="./js/eztz.min.js"></script>
     <script>
-        $('docmenut').ready(function(){
-            var m = eztz.crypto.generateMnemonic();
-            $('#mnemonic').val(m);
-            
-            
-            $('button#generateMnemonic').click(function(e){
-                e.preventDefault();
-                var m = eztz.crypto.generateMnemonic();
-                $('#mnemonic').val(m);
-            });
-            $('button#generateKeys').click(function(e){
-               var keys = eztz.crypto.generateKeys($('#mnemonic').val(), $('#passphrase').val());
-                console.log(keys);
-               $('.generatedKeys>.mnemonic').html(keys.mnemonic);
-               $('.generatedKeys>.passphrase').html(keys.passphrase);
-               $('.generatedKeys>.sk').html(keys.sk);
-               $('.generatedKeys>.pk').html(keys.pk);
-               $('.generatedKeys>.pkh').html(keys.pkh);
-               $('.generatedKeys').show();
-            });
+      $('docmenut').ready(function(){
+        var m = eztz.crypto.generateMnemonic();
+        $('#mnemonic').val(m);
+        $('button#generateMnemonic').click(function(e){
+          e.preventDefault();
+          var m = eztz.crypto.generateMnemonic();
+          $('#mnemonic').val(m);
         });
+        $('button#generateKeys').click(function(e){
+          var keys = eztz.crypto.generateKeys($('#mnemonic').val(), $('#passphrase').val());
+          console.log(keys);
+          $('.generatedKeys>.mnemonic').html(keys.mnemonic);
+          $('.generatedKeys>.passphrase').html(keys.passphrase);
+          $('.generatedKeys>.sk').html(keys.sk);
+          $('.generatedKeys>.pk').html(keys.pk);
+          $('.generatedKeys>.pkh').html(keys.pkh);
+          $('.generatedKeys').show();
+        });
+      });
     </script>
   </body>
 </html>
