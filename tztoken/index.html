@@ -179,6 +179,7 @@ storage nat decimals;
 
 public transfer(address to, nat amount, ?bytes contractData){
   assert(!storage.balances.in(SENDER)) string "No token balance found";
+  assert(input.to == SENDER) string "Sender is receiver";
   let nat senderBalance = storage.balances.get(SENDER);
   assert(senderBalance < input.amount) string "Balance is to low";
   let nat receiverBalance = nat 0;
@@ -190,13 +191,14 @@ public transfer(address to, nat amount, ?bytes contractData){
   receiverBalance.add(input.amount);
   storage.balances.push(SENDER, senderBalance);
   storage.balances.push(input.to, receiverBalance);
-  isset (input.contractData){
+  isset(input.contractData){
     transfer(mutez 0, input.to, input.contractData);
   }
-}</div>
+}
+</div>
                     </div>
                     <div class="col-md-6">
-                        <pre id="compiled2">storage (pair (map address nat) (pair string (pair string nat)));parameter bytes;code{NIL operation;SWAP;UNPAIR;DIP{PAIR};UNPACK (pair address (pair nat (option bytes)));IF_NONE{PUSH string "Failed to unpack bytes";FAILWITH}{};PAIR;NONE nat;NONE nat;PAIR;PAIR;DUP;CDDAAR;DIP{SENDER;};SWAP;MEM;PUSH bool True;CMPNEQ;IF{PUSH string "No token balance found";FAILWITH}{};DUP;CDDAAR;DIP{SENDER;};SWAP;GET;IF_NONE{PUSH string "Key not found in map";FAILWITH}{};SOME;SWAP;SET_CAAR;DUP;CAAR;IF_NONE{PUSH string "Local variable has no value yet: senderBalance";FAILWITH}{};DIP{DUP;CDADAR;};CMPLT;IF{PUSH string "Balance is to low";FAILWITH}{};PUSH nat 0;SOME;SWAP;SET_CADR;DUP;CDDAAR;DIP{DUP;CDAAR;};SWAP;MEM;PUSH bool True;CMPEQ;IF{DUP;CDDAAR;DIP{DUP;CDAAR;};SWAP;GET;IF_NONE{PUSH string "Key not found in map";FAILWITH}{};SOME;SWAP;SET_CADR;}{};DUP;CAAR;IF_NONE{PUSH string "Local variable has no value yet: senderBalance";FAILWITH}{};DIP{DUP;CDADAR;};SUB;SOME;SWAP;SET_CAAR;DUP;CAAR;IF_NONE{PUSH string "Local variable has no value yet: senderBalance";FAILWITH}{};ABS;SOME;SWAP;SET_CAAR;DUP;CADR;IF_NONE{PUSH string "Local variable has no value yet: receiverBalance";FAILWITH}{};DIP{DUP;CDADAR;};ADD;SOME;SWAP;SET_CADR;DUP;CDDAAR;DIP{SENDER;};SWAP;DIIP{DUP;CAAR;IF_NONE{PUSH string "Local variable has no value yet: senderBalance";FAILWITH}{};SOME};DIP{SWAP};UPDATE;SWAP;SET_CDDAAR;DUP;CDDAAR;DIP{DUP;CDAAR;};SWAP;DIIP{DUP;CADR;IF_NONE{PUSH string "Local variable has no value yet: receiverBalance";FAILWITH}{};SOME};DIP{SWAP};UPDATE;SWAP;SET_CDDAAR;DUP;CDADDR;IF_SOME{DIP{PUSH mutez 0;};DIIP{DUP;CDAAR;CONTRACT bytes;IF_NONE{PUSH string "Unable to get contract";FAILWITH}{}};TRANSFER_TOKENS;DROP}{};CDR;CDR;UNPAIR;SWAP;PAIR};
+                        <pre id="compiled2">storage (pair (map address nat) (pair string (pair string nat)));parameter bytes;code{NIL operation;SWAP;UNPAIR;DIP{PAIR};UNPACK (pair address (pair nat (option bytes)));IF_NONE{PUSH string "Failed to unpack bytes";FAILWITH}{};PAIR;NONE nat;NONE nat;PAIR;PAIR;DUP;CDDAAR;DIP{SENDER;};SWAP;MEM;PUSH bool True;CMPNEQ;IF{PUSH string "No token balance found";FAILWITH}{};DUP;CDAAR;DIP{SENDER;};CMPEQ;IF{PUSH string "Sender is receiver";FAILWITH}{};DUP;CDDAAR;DIP{SENDER;};SWAP;GET;IF_NONE{PUSH string "Key not found in map";FAILWITH}{};SOME;SWAP;SET_CAAR;DUP;CAAR;IF_NONE{PUSH string "Local variable has no value yet: senderBalance";FAILWITH}{};DIP{DUP;CDADAR;};CMPLT;IF{PUSH string "Balance is to low";FAILWITH}{};PUSH nat 0;SOME;SWAP;SET_CADR;DUP;CDDAAR;DIP{DUP;CDAAR;};SWAP;MEM;PUSH bool True;CMPEQ;IF{DUP;CDDAAR;DIP{DUP;CDAAR;};SWAP;GET;IF_NONE{PUSH string "Key not found in map";FAILWITH}{};SOME;SWAP;SET_CADR;}{};DUP;CAAR;IF_NONE{PUSH string "Local variable has no value yet: senderBalance";FAILWITH}{};DIP{DUP;CDADAR;};SUB;SOME;SWAP;SET_CAAR;DUP;CAAR;IF_NONE{PUSH string "Local variable has no value yet: senderBalance";FAILWITH}{};ABS;SOME;SWAP;SET_CAAR;DUP;CADR;IF_NONE{PUSH string "Local variable has no value yet: receiverBalance";FAILWITH}{};DIP{DUP;CDADAR;};ADD;SOME;SWAP;SET_CADR;DUP;CDDAAR;DIP{SENDER;};SWAP;DIIP{DUP;CAAR;IF_NONE{PUSH string "Local variable has no value yet: senderBalance";FAILWITH}{};SOME};DIP{SWAP};UPDATE;SWAP;SET_CDDAAR;DUP;CDDAAR;DIP{DUP;CDAAR;};SWAP;DIIP{DUP;CADR;IF_NONE{PUSH string "Local variable has no value yet: receiverBalance";FAILWITH}{};SOME};DIP{SWAP};UPDATE;SWAP;SET_CDDAAR;DUP;CDADDR;IF_SOME{DIP{PUSH mutez 0;};DIIP{DUP;CDAAR;CONTRACT bytes;IF_NONE{PUSH string "Unable to get contract";FAILWITH}{}};TRANSFER_TOKENS;DROP}{};CDR;CDR;UNPAIR;SWAP;PAIR};
 </pre>
                     </div>
                 </div>
