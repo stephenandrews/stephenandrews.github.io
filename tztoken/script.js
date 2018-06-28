@@ -9,7 +9,7 @@ function tokenTable(d){
     $("#dis_decimals").html((d[3].toString().length-1));
     $("#tokentable>tbody").empty();
     for(var i = 0; i < d[0].keys.length; i++){      
-      $("#tokentable tbody").append('<tr><td style="text-align:center;">'+d[0].keys[i]+'</td><td style="text-align:center;">'+(d[0].vals[i]/d[3]).toFixed((d[3].toString().length-1))+'</td></tr> ');
+      $("#tokentable tbody").append('<tr><td style="text-align:center;">'+d[0].keys[i]+'</td><td style="text-align:center;">'+(d[0].vals[i]/d[3]).toFixed((d[3].toString().length-1))+d[2]+'</td></tr> ');
     }
 }
 copyToClipboard = function(text) {
@@ -37,12 +37,12 @@ $('document').ready(function(){
     $('button#copy').click(function(e){
       e.preventDefault();
       copyToClipboard($('#compiled').html());
-      alert("Copied");
+      alert("Copied, time to run it!");
     });
     $('button#copytransfer').click(function(e){
       e.preventDefault();
       copyToClipboard($('#compiled3').html());
-      alert("Copied");
+      alert("Copied, time to run it!");
     });
     $('button#observe').click(function(e){
       e.preventDefault();
@@ -67,7 +67,7 @@ $('document').ready(function(){
           $("#compiled3").html(`./tezos-client transfer 0 from `+from+` to `+contract+` --arg '`+d+`'`);
           $('button#transfer').val("Transfer");
           $('button#transfer').attr("disabled", false);
-          alert("Done!");
+          alert("Done - now copy the command and run it in your node!");
           $("#copytransfer").show();
         }).catch(function(e){
           alert("There was an error, try again later");
@@ -101,6 +101,6 @@ $('document').ready(function(){
       +`" `+ Math.pow(10, decimals).toString()
       +`)))'`);
       $("#copy").show();
-      alert("Done!");
+      alert("Done - now copy the command and run it in your node!");
     });
 });
