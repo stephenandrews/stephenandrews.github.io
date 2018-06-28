@@ -1,6 +1,5 @@
 var editor = ace.edit("code");
 editor.setTheme("ace/theme/monokai");
-eztz.node.setProvider('http://96.126.99.67:3000');
 function tokenTable(d){
     d = eztz.utility.mic2arr(d);
     $("#tokenDtails").show();
