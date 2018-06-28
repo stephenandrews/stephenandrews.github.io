@@ -47,6 +47,7 @@ $('document').ready(function(){
     $('button#observe').click(function(e){
       e.preventDefault();
       var contract = $('#contract').val();
+      $('#trans_contract').val(contract);
       eztz.contract.storage(contract).then(tokenTable)
       .catch(function(e){alert("There was an error getting your token contract");});
     });
@@ -90,6 +91,7 @@ $('document').ready(function(){
       decimals = $('#decimals').val(),
       totalsupply = $('#totalsupply').val(),
       tz = $('#tz').val();
+      $('#trans_from').val(tz);
       if (!name || !symbol || !decimals || !totalsupply || !tz) return alert("Please check your inputs");
       totalsupply = totalsupply * Math.pow(10, decimals);
       $('#compiled').html(`./tezos-client originate contract MyToken for `+tz
