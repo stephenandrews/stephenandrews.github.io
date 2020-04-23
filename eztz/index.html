@@ -78,7 +78,7 @@
 
             </div>
         </div>
-        <div class="row justify-content-md-center">
+        <div class="row justify-content-md-center printable">
             <div class="col-md-10 generatedKeys">
                 <strong>mnemonic: </strong><span class='mnemonic'></span><br />
                 <strong>passphrase: </strong><span class='passphrase'></span><br />
@@ -128,6 +128,27 @@
             .generatedKeys {
                 display: none;
                 padding-top: 20px;
+            }
+        </style>
+        <style type="text/css" media="print">
+            .footer,
+            p,
+            code,
+            nav,
+            .row:not(.printable) {
+                display: none;
+            }
+            
+            .my-5 {
+                margin: 104px 0!important;
+            }
+            
+            .mb-4 {
+                margin-bottom: 52px!important;
+            }
+            
+            .container {
+                margin-top: 144px;
             }
         </style>
         <script src="./js/eztz.min.js"></script>
